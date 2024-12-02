@@ -22,7 +22,7 @@ const Category = ({ category }: CategoryProps) => {
       </figure>
       <div className="flex w-full flex-1 flex-col gap-2">
         <div className="text-14 flex justify-between">
-          <h2 className={cn("font-medium", main)}>{category.name}</h2>
+          <h2 className={cn("font-medium", main)}>{category.name || 'Expenses'}</h2>
           <h3 className={cn("font-normal", count)}>{category.count}</h3>
         </div>
         <Progress
