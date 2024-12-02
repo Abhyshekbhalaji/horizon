@@ -4,18 +4,20 @@ import TotalBalanceBox from "../components/TotalBalanceBox";
 import RightSidebar from "../components/RightSidebar";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
+import RecentTransactions from "../components/RecentTransactions";
 // import RecentTransactions from "@/components/RecentTransactions";
 
 const Home = async ({ searchParams }: SearchParamProps) => {
   const {id,page}=await searchParams;
   const currentPage = Number(page as string) || 1; // pagination
   const loggedIn = await getLoggedInUser(); // this is working fine
-  const accounts = await getAccounts({ userId: loggedIn?.$id });
+  const accounts = await getAccounts({ userId: loggedIn.$id });
 
   if (!accounts) return;
 
   const accountsData = accounts?.data;
-  console.log("accountsData", accountsData);
+
+ 
   const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
 
   const account = await getAccount({ appwriteItemId });
@@ -36,14 +38,14 @@ const Home = async ({ searchParams }: SearchParamProps) => {
           totalBanks={accounts?.totalBanks}
           totalCurrentBalance={accounts?.totalCurrentBalance}
         />
-        {/* <RecentTransactions
+        <RecentTransactions
           accounts={accountsData}
-          transactions={accounts?.transactions}
+          transactions={account?.transactions}
           appwriteItemId={appwriteItemId}
           page={currentPage}
-        /> */}
+        />
       </div>
-      <RightSidebar user={loggedIn} transactions={accounts?.transactions} banks={accountsData?.slice(0, 2)} />
+      <RightSidebar user={loggedIn} transactions={account?.transactions} banks={accountsData?.slice(0, 2)} />
     </section>
   );
 };
